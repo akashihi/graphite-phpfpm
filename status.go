@@ -17,6 +17,7 @@ package main
 
 import (
 	"encoding/json"
+	"strings"
 )
 
 /*
@@ -53,7 +54,9 @@ func parse(page string) Status {
 	var result = Status{}
 
 	var rawData interface{}
-	err := json.Unmarshal([]byte(page), &rawData)
+	d := json.NewDecoder(strings.NewReader(page))
+	d.UseNumber()
+	err := d.Decode(&rawData)
 	if err != nil {
 		log.Error("Can't parse status data: %v", err)
 		return result
@@ -61,15 +64,15 @@ func parse(page string) Status {
 
 	data := rawData.(map[string]interface{})
 
-	result.Accept = data["accepted conn"].(string)
-	result.Queue = data["listen queue"].(string)
-	result.MaxQueue = data["max listen queue"].(string)
-	result.Idle = data["idle processes"].(string)
-	result.Active = data["active processes"].(string)
-	result.Total = data["total processes"].(string)
-	result.MaxActive = data["max active processes"].(string)
-	result.MaxChildren = data["max children reached"].(string)
-	result.Slow = data["slow requests"].(string)
+	result.Accept = string(data["accepted conn"].(json.Number))
+	result.Queue = string(data["listen queue"].(json.Number))
+	result.MaxQueue = string(data["max listen queue"].(json.Number))
+	result.Idle = string(data["idle processes"].(json.Number))
+	result.Active = string(data["active processes"].(json.Number))
+	result.Total = string(data["total processes"].(json.Number))
+	result.MaxActive = string(data["max active processes"].(json.Number))
+	result.MaxChildren = string(data["max children reached"].(json.Number))
+	result.Slow = string(data["slow requests"].(json.Number))
 
 	return result
 }
