@@ -29,6 +29,7 @@ func sendMetrics(status Status, config Configuration) {
 	Graphite.SimpleSend(fmt.Sprint(config.MetricsPrefix, ".phpfpm.accept"), status.Accept)
 	Graphite.SimpleSend(fmt.Sprint(config.MetricsPrefix, ".phpfpm.queue"), status.Queue)
 	Graphite.SimpleSend(fmt.Sprint(config.MetricsPrefix, ".phpfpm.maxqueue"), status.MaxQueue)
+	Graphite.SimpleSend(fmt.Sprint(config.MetricsPrefix, ".phpfpm.active"), status.Active)
 	Graphite.SimpleSend(fmt.Sprint(config.MetricsPrefix, ".phpfpm.idle"), status.Idle)
 	Graphite.SimpleSend(fmt.Sprint(config.MetricsPrefix, ".phpfpm.total"), status.Total)
 	Graphite.SimpleSend(fmt.Sprint(config.MetricsPrefix, ".phpfpm.maxactive"), status.MaxActive)
